@@ -86,7 +86,7 @@ pub(crate) static CS: IsrCriticalSection = IsrCriticalSection::new();
 #[inline(always)]
 #[link_section = ".iram1.interrupt_active"]
 pub fn active() -> bool {
-    unsafe { xPortInIsrContext() != 0 }
+    unsafe { xPortInterruptedFromISRContext() != 0 }
 }
 
 pub fn with_isr_yield_signal(cb: impl FnOnce()) -> bool {
@@ -172,9 +172,9 @@ pub struct IsrCriticalSection(core::marker::PhantomData<*const ()>);
 #[cfg(not(any(esp32, esp32s2, esp32s3, esp32p4)))]
 #[inline(always)]
 #[link_section = ".iram1.interrupt_enter"]
-fn enter(_cs: &IsrCriticalSection) {
+fn enter(cs: &IsrCriticalSection) {
     unsafe {
-        vPortEnterCritical();
+        vPortEnterCritical(cs.0.get());
     }
 }
 
