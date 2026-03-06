@@ -181,7 +181,7 @@ impl From<Resolution> for adc_bitwidth_t {
 }
 
 #[cfg(not(esp_idf_version_at_least_6_0_0))]
-impl From<Resolution> for adc_bits_width_t {
+impl From<Resolution> for adc_bitwidth_t {
     fn from(resolution: Resolution) -> Self {
         match resolution {
             #[cfg(esp32)]
@@ -193,7 +193,7 @@ impl From<Resolution> for adc_bits_width_t {
             #[cfg(any(
                 esp32, esp32s3, esp32c3, esp32c2, esp32h2, esp32c5, esp32c6, esp32c61, esp32p4
             ))]
-            Resolution::Resolution12Bit => adc_bits_width_t_ADC_WIDTH_BIT_12,
+            Resolution::Resolution12Bit => adc_bitwidth_t_ADC_BITWIDTH_12,
             #[cfg(esp32s2)]
             Resolution::Resolution13Bit => adc_bits_width_t_ADC_WIDTH_BIT_13,
         }
